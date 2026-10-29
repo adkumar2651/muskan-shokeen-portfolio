@@ -5,6 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    base: '/muskan-shokeen-portfolio/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
