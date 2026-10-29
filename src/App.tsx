@@ -193,6 +193,104 @@ function getPillarIcon(title: string) {
   return <BookOpen className="w-5 h-5 text-[#7251A3]" />;
 }
 
+const editorialTerms = [
+  'Insolvency and Bankruptcy Code (IBC)',
+  'Insolvency & Bankruptcy Code (IBC)',
+  'Debt Recovery Tribunal (DRT)',
+  'Negotiable Instruments Act',
+  'Research Consultant & Academic Writer',
+  'Artificial Intelligence and Cyber Law',
+  'Artificial Intelligence (AI)',
+  'Ph.D. Scholar in Law',
+  'corporate training design',
+  'interactive facilitation',
+  'professional excellence',
+  'intellectual originality',
+  'analytical precision',
+  'doctoral research',
+  'academic legal research',
+  'professional success',
+  'emotional intelligence',
+  'statutory interpretation',
+  'judicial precedents',
+  'algorithmic ethics',
+  'data protection',
+  'executive presence',
+  'professional etiquette',
+  'adult learning behavior',
+  'corporate governance',
+  'legal advocacy',
+  'holistic learning',
+  'communication expertise',
+  'employability training',
+  'case-law analysis',
+  'case law research',
+  'doctoral legal scholarship',
+  'corporate litigation practice',
+  'Soft Skills Trainer',
+  'Soft Skill Trainer',
+  'Certified Trainer',
+  'Advocate',
+  'PhD Scholar',
+  'B.A. LL.B.',
+  'LL.M.',
+  'Ph.D.',
+  'Companies Act',
+  'SEBI regulations',
+  'SARFAESI Act',
+  'Cyber Law',
+  'PROTOUCH',
+  'case digests',
+  'litigation workflows',
+  'campus placements',
+  'corporate communication',
+  'legal research',
+  'academic writer'
+];
+
+const editorialTermPattern = new RegExp(
+  `(^|[^A-Za-z0-9])(${[...editorialTerms]
+    .sort((a, b) => b.length - a.length)
+    .map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('|')})(?=$|[^A-Za-z0-9])`,
+  'gi'
+);
+
+const editorialGradientTerms = new Set([
+  'professional excellence',
+  'doctoral research',
+  'professional success',
+  'emotional intelligence',
+  'executive presence'
+]);
+
+const editorialItalicTerms = new Set(['emotional intelligence', 'holistic learning']);
+
+function EditorialText({ text }: { text: string }) {
+  const content: React.ReactNode[] = [];
+  let cursor = 0;
+  const matcher = new RegExp(editorialTermPattern);
+  let match: RegExpExecArray | null;
+
+  while ((match = matcher.exec(text)) !== null) {
+    const phraseStart = match.index + match[1].length;
+    if (phraseStart > cursor) content.push(text.slice(cursor, phraseStart));
+
+    const isGradient = editorialGradientTerms.has(match[2].toLowerCase());
+    const isItalic = editorialItalicTerms.has(match[2].toLowerCase());
+    const className = `editorial-highlight${isGradient ? ' editorial-highlight--gradient' : ''}${isItalic ? ' editorial-highlight--italic' : ''}`;
+    content.push(
+      isItalic
+        ? <em key={`${phraseStart}-${match[2]}`} className={className}>{match[2]}</em>
+        : <strong key={`${phraseStart}-${match[2]}`} className={className}>{match[2]}</strong>
+    );
+    cursor = matcher.lastIndex;
+  }
+
+  if (cursor < text.length) content.push(text.slice(cursor));
+  return <>{content}</>;
+}
+
 /* =========================================================================
    MAIN APP ROUTER COMPONENT
 ========================================================================= */
@@ -432,7 +530,7 @@ export default function App() {
   ];
 
   return (
-    <div className={`min-h-screen w-full max-w-full overflow-x-clip flex flex-col bg-[#FFFCF6] text-[#10152D] font-sans antialiased selection:bg-[#EAE1F7] selection:text-[#7251A3] ${
+    <div className={`editorial-portfolio min-h-screen w-full max-w-full overflow-x-clip flex flex-col bg-[#FFFCF6] text-[#10152D] font-sans antialiased selection:bg-[#EAE1F7] selection:text-[#7251A3] ${
       cursorHoverType === 'hover' ? 'cursor-hover' : ''
     } ${cursorHoverType === 'cert' ? 'cursor-cert-hover' : ''}`}>
 
@@ -609,15 +707,15 @@ export default function App() {
                     </div>
 
                     {/* Headline with serif italic accents */}
-                    <h1 className="reveal-item delay-75 text-3xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-serif font-bold text-[#10152D] leading-[1.12] tracking-tight break-words">
-                      Empowering minds. <br className="hidden sm:inline" />
-                      <span className="italic font-normal text-[#7251A3]">Enriching lives.</span> <br className="hidden sm:inline" />
-                      Advocating justice.
+                    <h1 className="hero-editorial-heading reveal-item delay-75 text-3xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-serif font-bold text-[#10152D] leading-[1.12] tracking-tight break-words">
+                      <span className="hero-editorial-accent">Empowering</span> minds. <br className="hidden sm:inline" />
+                      <span className="hero-editorial-italic italic font-normal text-[#7251A3]">Enriching lives.</span> <br className="hidden sm:inline" />
+                      <span className="hero-editorial-accent">Advocating</span> justice.
                     </h1>
 
                     {/* Engaging human editorial introduction */}
-                    <p className="reveal-item delay-150 text-sm sm:text-base md:text-lg text-[#232B47] leading-relaxed max-w-2xl font-normal break-words">
-                      Muskan Shokeen unites the analytical discipline of legal advocacy with the transformative energy of corporate communication. Currently mentoring future leaders at St. Andrews Institute and advancing doctoral legal scholarship in contemporary commercial jurisprudence.
+                    <p className="editorial-copy editorial-copy--lead reveal-item delay-150 text-sm sm:text-base md:text-lg text-[#232B47] leading-relaxed max-w-2xl font-normal break-words">
+                      <EditorialText text="Muskan Shokeen unites the analytical discipline of legal advocacy with the transformative energy of corporate communication. Currently mentoring future leaders at St. Andrews Institute and advancing doctoral legal scholarship in contemporary commercial jurisprudence." />
                     </p>
 
                     {/* Clean unboxed metadata strip */}
@@ -706,8 +804,8 @@ export default function App() {
                         <h3 className="text-base sm:text-lg font-serif font-bold text-[#10152D] mb-1">
                           Muskan Shokeen
                         </h3>
-                        <p className="text-[11px] sm:text-xs text-[#4A5568] max-w-xs leading-relaxed hidden xs:block">
-                          B.A. LL.B. · LL.M. (AI & Cyber Law) · Ph.D. Scholar
+                        <p className="editorial-copy editorial-copy--compact text-[11px] sm:text-xs text-[#4A5568] max-w-xs leading-relaxed hidden xs:block">
+                          <EditorialText text="B.A. LL.B. · LL.M. (AI & Cyber Law) · Ph.D. Scholar" />
                         </p>
 
                         <div className="mt-3 px-3 py-1 rounded-md bg-[#EAE1F7] border border-[#D6C5EE] text-[10px] sm:text-[11px] font-semibold text-[#583B85] shadow-2xs">
@@ -733,19 +831,19 @@ export default function App() {
                 <div className="reveal-item delay-375 mt-8 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-6 bg-gradient-to-r from-[#FFFDF2] via-[#FEF5F9] via-[#FAF6FE] to-[#FFFDF2] rounded-2xl border-2 border-[#EAE1F7] shadow-xs max-w-full">
                   <div className="space-y-1 p-2 rounded-lg bg-white/70 min-w-0">
                     <div className="text-2xl sm:text-3xl font-serif font-bold text-[#10152D] tabular-nums">4+</div>
-                    <div className="text-xs text-[#4A5568]">Verified Global Accreditations</div>
+                    <div className="editorial-copy editorial-copy--compact text-xs text-[#4A5568]">Verified Global Accreditations</div>
                   </div>
                   <div className="space-y-1 p-2 rounded-lg bg-white/70 min-w-0">
                     <div className="text-2xl sm:text-3xl font-serif font-bold text-[#7251A3] tabular-nums">60+</div>
-                    <div className="text-xs text-[#4A5568]">Recertification Credits (PDCs & HR)</div>
+                    <div className="editorial-copy editorial-copy--compact text-xs text-[#4A5568]">Recertification Credits (PDCs & HR)</div>
                   </div>
                   <div className="space-y-1 p-2 rounded-lg bg-white/70 min-w-0">
                     <div className="text-2xl sm:text-3xl font-serif font-bold text-[#10152D] tabular-nums">3</div>
-                    <div className="text-xs text-[#4A5568]">Core Degrees (Ph.D., LL.M., LL.B.)</div>
+                    <div className="editorial-copy editorial-copy--compact text-xs text-[#4A5568]">Core Degrees (Ph.D., LL.M., LL.B.)</div>
                   </div>
                   <div className="space-y-1 p-2 rounded-lg bg-white/70 min-w-0">
                     <div className="text-2xl sm:text-3xl font-serif font-bold text-[#7251A3] tabular-nums">100%</div>
-                    <div className="text-xs text-[#4A5568]">Verified Institutional Track</div>
+                    <div className="editorial-copy editorial-copy--compact text-xs text-[#4A5568]">Verified Institutional Track</div>
                   </div>
                 </div>
               </div>
@@ -789,8 +887,8 @@ export default function App() {
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-[#10152D] break-words">
                     The Nexus of Legal Precision and Human Communication
                   </h2>
-                  <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm md:text-base text-[#4A5568] leading-relaxed break-words">
-                    Explore curated sections detailing Muskan Shokeen&rsquo;s verified professional background, institutional teaching appointments, formal degrees, and international accreditations.
+                  <p className="editorial-copy mt-2.5 sm:mt-3 text-xs sm:text-sm md:text-base text-[#4A5568] leading-relaxed break-words">
+                    <EditorialText text="Explore curated sections detailing Muskan Shokeen’s verified professional background, institutional teaching appointments, formal degrees, and international accreditations." />
                   </p>
                 </div>
 
@@ -808,8 +906,8 @@ export default function App() {
                       <h3 className="text-lg sm:text-xl font-serif font-bold text-[#10152D] mb-2 break-words">
                         Professional Biography & Pillars
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed mb-4 break-words">
-                        Discover Muskan&rsquo;s interdisciplinary journey spanning university campus bootcamps, court litigation under NI & SARFAESI Acts, and adult learning psychology.
+                      <p className="editorial-copy editorial-copy--compact text-xs sm:text-sm text-[#4A5568] leading-relaxed mb-4 break-words">
+                        <EditorialText text="Discover Muskan’s interdisciplinary journey spanning university campus bootcamps, court litigation under NI & SARFAESI Acts, and adult learning psychology." />
                       </p>
                     </div>
                     <a
@@ -837,8 +935,8 @@ export default function App() {
                       <h3 className="text-lg sm:text-xl font-serif font-bold text-[#10152D] mb-2 break-words">
                         Work Track & Verified Roles
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed mb-4 break-words">
-                        Chronological record across St. Andrews Institute of Technology & Management, Protouch, TruLegalSolutions, and Delhi judicial chambers.
+                      <p className="editorial-copy editorial-copy--compact text-xs sm:text-sm text-[#4A5568] leading-relaxed mb-4 break-words">
+                        <EditorialText text="Chronological record across St. Andrews Institute of Technology & Management, Protouch, TruLegalSolutions, and Delhi judicial chambers." />
                       </p>
                     </div>
                     <a
@@ -866,8 +964,8 @@ export default function App() {
                       <h3 className="text-lg sm:text-xl font-serif font-bold text-[#10152D] mb-2 break-words">
                         Authentic Credentials Gallery
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed mb-4 break-words">
-                        Four verified certificate scans with high-resolution inspection, SHRM recertification credits (60 PDCs), and HRCI accreditations.
+                      <p className="editorial-copy editorial-copy--compact text-xs sm:text-sm text-[#4A5568] leading-relaxed mb-4 break-words">
+                        <EditorialText text="Four verified certificate scans with high-resolution inspection, SHRM recertification credits (60 PDCs), and HRCI accreditations." />
                       </p>
                     </div>
                     <a
@@ -895,8 +993,8 @@ export default function App() {
                       <h3 className="text-lg sm:text-xl font-serif font-bold text-[#10152D] mb-2 break-words">
                         Academic Writing & Legal Research
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed mb-4 break-words">
-                        Doctrinal statutory interpretation across AI ethics, cyber governance, SEBI compliance, and Companies Act jurisprudence.
+                      <p className="editorial-copy editorial-copy--compact text-xs sm:text-sm text-[#4A5568] leading-relaxed mb-4 break-words">
+                        <EditorialText text="Doctrinal statutory interpretation across AI ethics, cyber governance, SEBI compliance, and Companies Act jurisprudence." />
                       </p>
                     </div>
                     <a
@@ -938,8 +1036,8 @@ export default function App() {
                   <h3 className="text-xl sm:text-3xl font-serif font-bold text-[#10152D] break-words">
                     Available for Institutional Training & Placement Bootcamps
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed break-words">
-                    Facilitating university campus employability drives, executive corporate workshops, and specialized legal research consulting.
+                  <p className="editorial-copy editorial-copy--compact text-xs sm:text-sm text-[#4A5568] leading-relaxed break-words">
+                    <EditorialText text="Facilitating university campus employability drives, executive corporate workshops, and specialized legal research consulting." />
                   </p>
                   <div className="pt-2">
                     <a
@@ -985,8 +1083,8 @@ export default function App() {
                 <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-[#10152D] break-words">
                   About Muskan Shokeen
                 </h1>
-                <p className="mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
-                  Advocate, PROTOUCH Certified Corporate Trainer, and Doctoral Legal Scholar bridging academic rigor and corporate employability.
+                <p className="editorial-copy mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
+                  <EditorialText text="Advocate, PROTOUCH Certified Corporate Trainer, and Doctoral Legal Scholar bridging academic rigor and corporate employability." />
                 </p>
               </div>
             </div>
@@ -1008,8 +1106,8 @@ export default function App() {
                       <div className="text-xs font-bold uppercase tracking-wider text-[#7251A3]">
                         Scholarly Trajectory
                       </div>
-                      <div className="text-xs sm:text-sm text-[#10152D] leading-relaxed break-words">
-                        <strong>Ph.D. Scholar in Law</strong> at GD Goenka University, following an <strong>LL.M. in Artificial Intelligence and Cyber Law</strong> from Chandigarh University and a five-year <strong>B.A. LL.B.</strong> from Lloyd Law College.
+                      <div className="editorial-copy editorial-copy--compact text-xs sm:text-sm text-[#10152D] leading-relaxed break-words">
+                        <EditorialText text="Ph.D. Scholar in Law at GD Goenka University, following an LL.M. in Artificial Intelligence and Cyber Law from Chandigarh University and a five-year B.A. LL.B. from Lloyd Law College." />
                       </div>
                     </div>
 
@@ -1038,17 +1136,14 @@ export default function App() {
 
                   {/* Right Column: Editorial Narrative Prose */}
                   <div className="reveal-item delay-150 lg:col-span-7 space-y-4 sm:space-y-6 text-[#232B47] text-sm sm:text-base leading-relaxed min-w-0">
-                    <p className="text-base sm:text-lg text-[#10152D] font-medium leading-relaxed break-words">
-                      {PROFILE.about.lead}
+                    <p className="editorial-copy editorial-copy--lead text-base sm:text-lg text-[#10152D] font-medium leading-relaxed break-words">
+                      <EditorialText text={PROFILE.about.lead} />
                     </p>
-                    <p className="break-words">
-                      {PROFILE.about.currentRole} By organizing structured interview bootcamps, group discussion simulations,
-                      and individualized feedback cycles, students develop the practical verbal clarity and psychological resilience
-                      required to thrive in competitive campus placement drives.
+                    <p className="editorial-copy break-words">
+                      <EditorialText text={`${PROFILE.about.currentRole} By organizing structured interview bootcamps, group discussion simulations, and individualized feedback cycles, students develop the practical verbal clarity and psychological resilience required to thrive in competitive campus placement drives.`} />
                     </p>
-                    <p className="break-words">
-                      {PROFILE.about.interdisciplinaryEdge} Her background in litigation and commercial laws gives students and corporate
-                      teams an authentic understanding of professional workplace accountability, regulatory compliance, and workplace ethics.
+                    <p className="editorial-copy break-words">
+                      <EditorialText text={`${PROFILE.about.interdisciplinaryEdge} Her background in litigation and commercial laws gives students and corporate teams an authentic understanding of professional workplace accountability, regulatory compliance, and workplace ethics.`} />
                     </p>
 
                     {/* Verified Milestones */}
@@ -1059,7 +1154,7 @@ export default function App() {
                         </div>
                         <div className="min-w-0">
                           <div className="text-xs sm:text-sm font-bold text-[#10152D] break-words">Holistic Employability</div>
-                          <div className="text-xs text-[#4A5568] break-words">Personalized resume building, mock interviews, and GD rubrics.</div>
+                          <div className="editorial-copy editorial-copy--compact text-xs text-[#4A5568] break-words"><EditorialText text="Personalized resume building, mock interviews, and GD rubrics." /></div>
                         </div>
                       </div>
                       <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#FAF5FE] border border-[#E2D5F3] shadow-2xs min-w-0">
@@ -1068,7 +1163,7 @@ export default function App() {
                         </div>
                         <div className="min-w-0">
                           <div className="text-xs sm:text-sm font-bold text-[#10152D] break-words">Corporate Law Research</div>
-                          <div className="text-xs text-[#4A5568] break-words">Specialist writing on Companies Act, SEBI, and Insolvency.</div>
+                          <div className="editorial-copy editorial-copy--compact text-xs text-[#4A5568] break-words"><EditorialText text="Specialist writing on Companies Act, SEBI, and Insolvency." /></div>
                         </div>
                       </div>
                     </div>
@@ -1087,8 +1182,8 @@ export default function App() {
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-[#10152D] break-words">
                     Where Legal Rigor Meets Human Development
                   </h2>
-                  <p className="mt-2 sm:mt-3 text-xs sm:text-sm md:text-base text-[#4A5568] leading-relaxed break-words">
-                    Synthesizing legal precision, emotional intelligence, and instructional acumen into impactful training and research.
+                  <p className="editorial-copy mt-2 sm:mt-3 text-xs sm:text-sm md:text-base text-[#4A5568] leading-relaxed break-words">
+                    <EditorialText text="Synthesizing legal precision, emotional intelligence, and instructional acumen into impactful training and research." />
                   </p>
                 </div>
 
@@ -1114,8 +1209,8 @@ export default function App() {
                           <h3 className="text-base sm:text-lg font-serif font-bold text-[#10152D] mb-2 break-words">
                             {pillar.title}
                           </h3>
-                          <p className="text-xs sm:text-sm text-[#334155] leading-relaxed break-words">
-                            {pillar.description}
+                          <p className="editorial-copy editorial-copy--compact text-xs sm:text-sm text-[#334155] leading-relaxed break-words">
+                            <EditorialText text={pillar.description} />
                           </p>
                         </div>
                       </TiltCard>
@@ -1177,8 +1272,8 @@ export default function App() {
                 <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-[#10152D] break-words">
                   Professional Experience
                 </h1>
-                <p className="mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
-                  A chronological milestone journey across campus soft skills facilitation, corporate litigation practice, and academic legal research consultancy.
+                <p className="editorial-copy mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
+                  <EditorialText text="A chronological milestone journey across campus soft skills facilitation, corporate litigation practice, and academic legal research consultancy." />
                 </p>
               </div>
             </div>
@@ -1247,12 +1342,12 @@ export default function App() {
                               <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#10152D] break-words">
                                 {exp.title}
                               </h3>
-                              <div className="text-xs sm:text-sm font-bold text-[#7251A3] mt-0.5 break-words">
-                                {exp.company}
+                                <div className="editorial-emphasis text-xs sm:text-sm font-bold text-[#7251A3] mt-0.5 break-words">
+                                  <EditorialText text={exp.company} />
                               </div>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs max-w-full">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs max-w-full editorial-metadata">
                               <span className="font-semibold text-[#594400] bg-[#FFF0B3] border border-[#F4DE85] px-2.5 py-0.5 rounded-md shrink-0 flex items-center gap-1">
                                 <Calendar className="w-3 h-3 text-[#594400]" />
                                 <span>{exp.period}</span>
@@ -1263,8 +1358,8 @@ export default function App() {
                           </div>
 
                           {exp.summary && (
-                            <p className="text-xs sm:text-sm text-[#4A5568] italic mb-3 sm:mb-4 break-words">
-                              {exp.summary}
+                            <p className="editorial-copy editorial-copy--compact text-xs sm:text-sm text-[#4A5568] italic mb-3 sm:mb-4 break-words">
+                              <EditorialText text={exp.summary} />
                             </p>
                           )}
 
@@ -1272,7 +1367,7 @@ export default function App() {
                             {exp.responsibilities.map((resp, rIdx) => (
                               <li key={rIdx} className="text-xs sm:text-sm text-[#232B47] flex items-start gap-2.5">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#7251A3] mt-2 shrink-0" />
-                                <span className="leading-relaxed break-words">{resp}</span>
+                                <span className="editorial-copy editorial-copy--compact leading-relaxed break-words"><EditorialText text={resp} /></span>
                               </li>
                             ))}
                           </ul>
@@ -1350,8 +1445,8 @@ export default function App() {
                 <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-[#10152D] break-words">
                   Degrees & Doctoral Research
                 </h1>
-                <p className="mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
-                  Rigorous formal legal training spanning undergraduate law, postgraduate AI & cyber legal scholarship, and active doctoral inquiry.
+                <p className="editorial-copy mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
+                  <EditorialText text="Rigorous formal legal training spanning undergraduate law, postgraduate AI & cyber legal scholarship, and active doctoral inquiry." />
                 </p>
               </div>
             </div>
@@ -1417,15 +1512,15 @@ export default function App() {
                           <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#10152D] mb-1 break-words">
                             {edu.degree}
                           </h3>
-                          <div className="text-xs sm:text-sm font-semibold text-[#2D3748] mb-1 break-words">
-                            {edu.field}
+                          <div className="editorial-emphasis text-xs sm:text-sm font-semibold text-[#2D3748] mb-1 break-words">
+                            <EditorialText text={edu.field} />
                           </div>
-                          <div className={`text-xs font-bold ${eduThemes.instText} mb-3 break-words`}>
-                            {edu.institution}
+                          <div className={`editorial-emphasis text-xs font-bold ${eduThemes.instText} mb-3 break-words`}>
+                            <EditorialText text={edu.institution} />
                           </div>
 
-                          <p className="text-xs text-[#4A5568] leading-relaxed pt-3 border-t border-[#EAE1F7]/60 break-words">
-                            {edu.highlights}
+                          <p className="editorial-copy editorial-copy--compact text-xs text-[#4A5568] leading-relaxed pt-3 border-t border-[#EAE1F7]/60 break-words">
+                            <EditorialText text={edu.highlights ?? ''} />
                           </p>
                         </div>
                       </TiltCard>
@@ -1477,8 +1572,8 @@ export default function App() {
                 <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-[#10152D] break-words">
                   Academic Writing & Legal Research
                 </h1>
-                <p className="mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
-                  Doctrinal analysis, statutory interpretation, and legal research consulting spanning corporate governance, financial regulations, and artificial intelligence law.
+                <p className="editorial-copy mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
+                  <EditorialText text="Doctrinal analysis, statutory interpretation, and legal research consulting spanning corporate governance, financial regulations, and artificial intelligence law." />
                 </p>
               </div>
             </div>
@@ -1533,8 +1628,8 @@ export default function App() {
                             {res.title}
                           </h3>
 
-                          <p className="text-xs sm:text-sm text-[#334155] leading-relaxed mb-4 break-words">
-                            {res.doctrinalFocus}
+                          <p className="editorial-copy editorial-copy--compact text-xs sm:text-sm text-[#334155] leading-relaxed mb-4 break-words">
+                            <EditorialText text={res.doctrinalFocus} />
                           </p>
                         </div>
 
@@ -1571,7 +1666,7 @@ export default function App() {
                     {RESEARCH_METHODOLOGIES.map((meth, mIdx) => (
                       <div key={mIdx} className="space-y-1.5 p-4 rounded-xl bg-white/80 border border-[#EAE1F7] min-w-0">
                         <div className="text-sm font-bold text-[#10152D] break-words">{meth.title}</div>
-                        <div className="text-xs text-[#4A5568] leading-relaxed break-words">{meth.description}</div>
+                        <div className="editorial-copy editorial-copy--compact text-xs text-[#4A5568] leading-relaxed break-words"><EditorialText text={meth.description} /></div>
                       </div>
                     ))}
                   </div>
@@ -1581,7 +1676,7 @@ export default function App() {
                     <div className="flex items-start gap-2.5 min-w-0">
                       <FileText className="w-4 h-4 text-[#7251A3] shrink-0 mt-0.5" />
                       <span className="break-words">
-                        <strong className="text-[#10152D]">Academic Milestone Notice:</strong> Active doctoral research at GD Goenka University and commercial research writing. Verified papers and monographs will be indexed here with authoritative citations as they are formally published.
+                        <strong className="text-[#10152D]">Academic Milestone Notice:</strong> <EditorialText text="Active doctoral research at GD Goenka University and commercial research writing. Verified papers and monographs will be indexed here with authoritative citations as they are formally published." />
                       </span>
                     </div>
                   </div>
@@ -1633,8 +1728,8 @@ export default function App() {
                     <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-[#10152D] break-words">
                       Authentic Credentials & Accreditations
                     </h1>
-                    <p className="mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
-                      Directly verified from official training institute assessments and accreditation registries. Click on any certificate to inspect the high-resolution scanned document.
+                    <p className="editorial-copy mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
+                      <EditorialText text="Directly verified from official training institute assessments and accreditation registries. Click on any certificate to inspect the high-resolution scanned document." />
                     </p>
                   </div>
                   <div className="w-full sm:w-auto text-[11px] sm:text-xs text-[#594400] bg-[#FFFDF0] p-3 rounded-xl border border-[#F6E6A8] shadow-2xs font-medium max-w-full flex flex-wrap items-center gap-1.5 shrink-0 self-start md:self-auto">
@@ -1694,25 +1789,25 @@ export default function App() {
                           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs mb-2 max-w-full">
                             <span className="font-bold text-[#7251A3] bg-[#EAE1F7] px-2 py-0.5 rounded-md border border-[#D6C5EE] shrink-0">{cert.issuer}</span>
                             <span aria-hidden="true" className="text-[#D6C5EE] shrink-0">·</span>
-                            <span className="font-medium text-[#4A5568] break-words">{cert.partnerOrAccreditor}</span>
+                            <span className="editorial-metadata font-medium text-[#4A5568] break-words"><EditorialText text={cert.partnerOrAccreditor} /></span>
                           </div>
 
                           <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#10152D] group-hover:text-[#7251A3] transition-colors break-words">
                             {cert.title}
                           </h3>
 
-                          <p className="mt-2 text-xs sm:text-sm text-[#4A5568] leading-relaxed break-words">
-                            {cert.summary}
+                          <p className="editorial-copy editorial-copy--compact mt-2 text-xs sm:text-sm text-[#4A5568] leading-relaxed break-words">
+                            <EditorialText text={cert.summary} />
                           </p>
                         </div>
 
                         <div className="pt-3 sm:pt-4 border-t border-[#EAE1F7] flex flex-wrap items-center justify-between gap-2 sm:gap-3 text-xs max-w-full">
                           <div className="text-[#4A5568] text-[11px] sm:text-xs break-words">
-                            <span className="font-bold text-[#10152D]">Signatory:</span> {cert.signatory}
+                            <span className="font-bold text-[#10152D]">Signatory:</span> <EditorialText text={cert.signatory} />
                           </div>
                           {cert.creditsDescription && (
                             <div className="font-semibold text-[#583B85] bg-[#EAE1F7] px-2.5 py-1 rounded-md text-[11px] sm:text-xs border border-[#D6C5EE] break-words">
-                              {cert.creditsDescription}
+                              <EditorialText text={cert.creditsDescription} />
                             </div>
                           )}
                         </div>
@@ -1777,8 +1872,8 @@ export default function App() {
                     <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-[#10152D] break-words">
                       Skills & Domains of Expertise
                     </h1>
-                    <p className="mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
-                      Verified skills recorded across corporate training programs, court litigation practice, and academic legal research.
+                    <p className="editorial-copy mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
+                      <EditorialText text="Verified skills recorded across corporate training programs, court litigation practice, and academic legal research." />
                     </p>
                   </div>
 
@@ -1811,11 +1906,11 @@ export default function App() {
               <div className="max-w-7xl mx-auto px-3.5 sm:px-6 w-full min-w-0">
                 {totalMatchingSkills === 0 ? (
                   <div className="p-6 sm:p-8 text-center bg-white rounded-2xl border-2 border-[#EAE1F7] space-y-2 shadow-sm max-w-md mx-auto min-w-0">
-                    <p className="text-sm font-semibold text-[#10152D] break-words">
+                    <p className="editorial-copy editorial-copy--compact text-sm font-semibold text-[#10152D] break-words">
                       No skills matching &ldquo;{skillSearchQuery}&rdquo;
                     </p>
-                    <p className="text-xs text-[#4A5568] break-words">
-                      Try searching for keywords such as &ldquo;Communication&rdquo;, &ldquo;Research&rdquo;, &ldquo;Placement&rdquo;, or &ldquo;Legal&rdquo;.
+                    <p className="editorial-copy editorial-copy--compact text-xs text-[#4A5568] break-words">
+                      <EditorialText text="Try searching for keywords such as “Communication”, “Research”, “Placement”, or “Legal”." />
                     </p>
                     <button
                       onClick={() => setSkillSearchQuery('')}
@@ -1850,11 +1945,11 @@ export default function App() {
                           <div className="space-y-2.5 sm:space-y-3">
                             {filteredSkills.map((s, sIdx) => (
                               <div key={sIdx} className="flex items-center justify-between text-xs py-1.5 px-2 rounded-lg group hover:bg-[#FAF5FE] transition-colors min-w-0">
-                                <span className="font-medium text-[#10152D] group-hover:text-[#7251A3] transition-colors truncate">
-                                  {s.name}
+                                <span className="font-semibold text-[#10152D] group-hover:text-[#7251A3] transition-colors truncate">
+                                  <EditorialText text={s.name} />
                                 </span>
                                 {s.context && (
-                                  <span className={`text-[10px] sm:text-[11px] ${catThemes.badgeBg} px-2 py-0.5 rounded font-medium shrink-0 ml-1.5`}>{s.context}</span>
+                                  <span className={`editorial-metadata text-[10px] sm:text-[11px] ${catThemes.badgeBg} px-2 py-0.5 rounded font-medium shrink-0 ml-1.5`}>{s.context}</span>
                                 )}
                               </div>
                             ))}
@@ -1909,8 +2004,8 @@ export default function App() {
                 <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-[#10152D] break-words">
                   Initiate a Consultation
                 </h1>
-                <p className="mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
-                  Available for campus soft skills bootcamps, employability and placement training, corporate facilitation, and academic legal research consulting.
+                <p className="editorial-copy mt-2 text-xs sm:text-sm md:text-base text-[#4A5568] max-w-2xl break-words">
+                  <EditorialText text="Available for campus soft skills bootcamps, employability and placement training, corporate facilitation, and academic legal research consulting." />
                 </p>
               </div>
             </div>
@@ -1927,8 +2022,8 @@ export default function App() {
                       <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#10152D] break-words">
                         Collaboration Channels
                       </h2>
-                      <p className="mt-2 text-xs sm:text-sm text-[#4A5568] leading-relaxed break-words">
-                        Direct outreach options for academic institutions, university placement departments, corporate HR teams, and legal research initiatives.
+                      <p className="editorial-copy editorial-copy--compact mt-2 text-xs sm:text-sm text-[#4A5568] leading-relaxed break-words">
+                        <EditorialText text="Direct outreach options for academic institutions, university placement departments, corporate HR teams, and legal research initiatives." />
                       </p>
                     </div>
 
@@ -1965,8 +2060,8 @@ export default function App() {
                         </div>
                         <div className="min-w-0">
                           <div className="font-bold text-[#10152D] text-sm break-words">Current Primary Engagement</div>
-                          <div className="text-[#4A5568] mt-0.5 break-words">
-                            Soft Skill Trainer at St. Andrews Institute of Technology & Management
+                          <div className="editorial-copy editorial-copy--compact text-[#4A5568] mt-0.5 break-words">
+                            <EditorialText text="Soft Skill Trainer at St. Andrews Institute of Technology & Management" />
                           </div>
                         </div>
                       </div>
@@ -1979,8 +2074,8 @@ export default function App() {
                       <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#10152D] mb-1 sm:mb-2 break-words">
                         Send a Message
                       </h3>
-                      <p className="text-xs text-[#4A5568] mb-4 sm:mb-6 break-words">
-                        Complete the form below to initiate an inquiry for corporate training programs, placement schedule collaborations, or academic research.
+                      <p className="editorial-copy editorial-copy--compact text-xs text-[#4A5568] mb-4 sm:mb-6 break-words">
+                        <EditorialText text="Complete the form below to initiate an inquiry for corporate training programs, placement schedule collaborations, or academic research." />
                       </p>
 
                       {formSubmitted ? (
@@ -1992,12 +2087,12 @@ export default function App() {
                             <h4 className="text-lg sm:text-xl font-serif font-bold text-[#10152D] break-words">
                               Thanks for reaching out!
                             </h4>
-                            <p className="text-sm font-semibold text-[#7251A3] break-words">
+                            <p className="editorial-copy editorial-copy--compact text-sm font-semibold text-[#7251A3] break-words">
                               The contact form will be available soon.
                             </p>
                           </div>
-                          <p className="text-xs text-[#4A5568] max-w-md mx-auto leading-relaxed break-words">
-                            Thank you, <strong>{formState.name}</strong>. Direct message dispatch is currently being prepared as Muskan Shokeen's official professional email and mail service are finalized. Your inquiry regarding <em>&ldquo;{formState.subject}&rdquo;</em> has been captured in this browser session.
+                          <p className="editorial-copy editorial-copy--compact text-xs text-[#4A5568] max-w-md mx-auto leading-relaxed break-words">
+                            <EditorialText text={`Thank you, ${formState.name}. Direct message dispatch is currently being prepared as Muskan Shokeen's official professional email and mail service are finalized. Your inquiry regarding “${formState.subject}” has been captured in this browser session.`} />
                           </p>
                           <div className="pt-2">
                             <button
@@ -2158,8 +2253,8 @@ export default function App() {
                 </span>
                 <span className="text-xl sm:text-2xl font-serif font-bold text-white break-words">Muskan Shokeen</span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-md leading-relaxed font-normal break-words">
-                Soft Skills Trainer · PROTOUCH Certified Corporate Facilitator · Advocate · Academic Legal Researcher · PhD Scholar in Law.
+              <p className="editorial-copy editorial-copy--compact text-xs sm:text-sm text-slate-300 max-w-md leading-relaxed font-normal break-words">
+                <EditorialText text="Soft Skills Trainer · PROTOUCH Certified Corporate Facilitator · Advocate · Academic Legal Researcher · PhD Scholar in Law." />
               </p>
               <div className="text-xs text-[#F8DCE8] pt-1 font-serif italic break-words">
                 &ldquo;Empowering minds. Enriching lives. Advocating justice.&rdquo;

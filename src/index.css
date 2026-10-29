@@ -52,49 +52,179 @@ h1, h2, h3, h4, h5, h6, .font-serif-heading {
   text-wrap: pretty;
 }
 
-h1 {
+.editorial-portfolio main h1 {
+  color: #10152D;
+  font-size: clamp(2.5rem, 5.5vw, 4.75rem);
   font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.08;
-}
-
-h1:not(.reveal-item) {
-  background-image: linear-gradient(105deg, #10152D 8%, #583B85 72%, #7251A3 100%);
+  letter-spacing: -0.045em;
+  line-height: 0.99;
+  background-image: linear-gradient(108deg, #10152D 4%, #583B85 66%, #A13A68 100%);
   background-clip: text;
   -webkit-background-clip: text;
-  color: transparent;
 }
 
-h2 {
+.editorial-portfolio main h1.hero-editorial-heading {
+  font-size: clamp(2.65rem, 6.6vw, 5.5rem);
+  letter-spacing: -0.05em;
+  line-height: 0.96;
+}
+
+.editorial-portfolio main h2 {
+  color: #10152D;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  background-image: linear-gradient(105deg, #10152D 15%, #583B85 82%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.editorial-portfolio main h3 {
+  color: #10152D;
+  font-size: clamp(1.35rem, 2.2vw, 1.8rem);
   font-weight: 700;
   letter-spacing: -0.025em;
-  line-height: 1.14;
+  line-height: 1.12;
 }
 
-h3 {
-  font-weight: 700;
-  letter-spacing: -0.018em;
-  line-height: 1.2;
-}
-
-h4, h5, h6 {
+.editorial-portfolio main h4,
+.editorial-portfolio main h5,
+.editorial-portfolio main h6 {
+  color: #10152D;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   line-height: 1.3;
 }
 
-h1 em, h2 em, h3 em {
+.editorial-portfolio main h1 em,
+.editorial-portfolio main h2 em,
+.editorial-portfolio main h3 em {
+  color: #583B85;
+  font-weight: 600;
+}
+
+.editorial-portfolio main .hero-editorial-accent,
+.editorial-portfolio main .hero-editorial-italic {
+  color: #583B85;
+  background-image: linear-gradient(105deg, #583B85 4%, #A13A68 96%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.editorial-portfolio main .hero-editorial-italic {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.editorial-portfolio main p {
+  line-height: 1.75;
+  letter-spacing: 0.008em;
+}
+
+.editorial-portfolio main p strong,
+.editorial-portfolio main p b {
+  color: #583B85;
+  font-weight: 700;
+}
+
+.editorial-portfolio main p em {
   color: #7251A3;
   font-weight: 600;
 }
 
-p {
-  letter-spacing: 0.005em;
+.editorial-portfolio main [class*="uppercase"] {
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.editorial-portfolio main [class*="text-xs"] {
+  letter-spacing: 0.015em;
+}
+
+@supports (background-clip: text) {
+  .editorial-portfolio main h1,
+  .editorial-portfolio main h2,
+  .editorial-portfolio main .hero-editorial-accent,
+  .editorial-portfolio main .hero-editorial-italic {
+    color: transparent;
+  }
 }
 
 strong, b {
   font-weight: 700;
   letter-spacing: -0.01em;
+}
+
+.editorial-portfolio main .editorial-copy {
+  font-size: clamp(0.875rem, 0.18vw + 0.82rem, 0.96rem);
+  line-height: 1.8;
+  letter-spacing: 0.012em;
+  text-wrap: pretty;
+}
+
+.editorial-portfolio main .editorial-copy--lead {
+  font-size: clamp(1rem, 0.3vw + 0.92rem, 1.125rem);
+  line-height: 1.72;
+  font-weight: 500;
+  color: #10152D;
+}
+
+.editorial-portfolio main .editorial-copy--compact {
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.editorial-portfolio .editorial-highlight {
+  color: #583B85;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: -0.01em;
+}
+
+.editorial-portfolio .editorial-highlight--italic {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.editorial-portfolio .editorial-highlight--gradient {
+  color: #583B85;
+  background-image: linear-gradient(100deg, #583B85 4%, #8F3E69 96%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+@supports (-webkit-background-clip: text) {
+  .editorial-portfolio .editorial-highlight--gradient {
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@media (forced-colors: active) {
+  .editorial-portfolio .editorial-highlight--gradient {
+    color: LinkText;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+.editorial-portfolio .editorial-metadata {
+  font-weight: 600;
+  letter-spacing: 0.035em;
+}
+
+.editorial-portfolio .editorial-emphasis {
+  color: #7251A3;
+  font-weight: 600;
+}
+
+.editorial-portfolio main li .editorial-copy {
+  color: #232B47;
+}
+
+.editorial-portfolio footer p {
+  line-height: 1.8;
+  letter-spacing: 0.015em;
 }
 
 label {
