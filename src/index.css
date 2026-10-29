@@ -48,6 +48,61 @@ h1, h2, h3, h4, h5, h6, .font-serif-heading {
   font-family: var(--font-serif);
   overflow-wrap: break-word;
   word-break: normal;
+  font-kerning: normal;
+  text-wrap: pretty;
+}
+
+h1 {
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+h1:not(.reveal-item) {
+  background-image: linear-gradient(105deg, #10152D 8%, #583B85 72%, #7251A3 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+h2 {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.14;
+}
+
+h3 {
+  font-weight: 700;
+  letter-spacing: -0.018em;
+  line-height: 1.2;
+}
+
+h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+h1 em, h2 em, h3 em {
+  color: #7251A3;
+  font-weight: 600;
+}
+
+p {
+  letter-spacing: 0.005em;
+}
+
+strong, b {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+label {
+  letter-spacing: 0.015em;
+}
+
+button, a {
+  letter-spacing: 0.005em;
 }
 
 p, span, a, button, input, textarea, label {
