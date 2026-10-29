@@ -100,7 +100,7 @@ export const CERTIFICATIONS: Certificate[] = [
     participantId: "PRO - 79635",
     credentialCode: "26-5WVA3",
     creditsDescription: "Earned 30 PDCs towards SHRM-CP / SHRM-SCP recertification",
-    image: "/certificates/shrm-soft-skill-trainer.png",
+    image: `${import.meta.env.BASE_URL}certificates/shrm-soft-skill-trainer.png`,
     signatory: "Dr. Aparna Sethi · Affiliate Representative",
     summary: "Comprehensive professional certification validating advanced competency in soft skills training methodology, curriculum execution, and adult learning behavior.",
     badges: ["SHRM Approved", "30 PDCs", "Credential 26-5WVA3"]
@@ -112,7 +112,7 @@ export const CERTIFICATIONS: Certificate[] = [
     partnerOrAccreditor: "CPD Accredited · HRCI Approved · ISO 9001:2015 · SHRM",
     date: "August 23, 2026",
     participantId: "PRO - 79635",
-    image: "/certificates/train-the-trainer.png",
+    image: `${import.meta.env.BASE_URL}certificates/train-the-trainer.png`,
     signatory: "Dr. Aparna Sethi · Director",
     summary: "Rigorous institute assessment and certification qualifying master facilitation techniques, pedagogy design, audience engagement, and corporate instruction.",
     badges: ["ISO 9001:2015", "CPD Accredited", "HRCI Provider", "Master Trainer"]
@@ -124,7 +124,7 @@ export const CERTIFICATIONS: Certificate[] = [
     partnerOrAccreditor: "The CPD Standards Office (Provider No: 22381)",
     date: "August 23, 2026",
     participantId: "PRO - 79635",
-    image: "/certificates/cpd-corporate-trainer.png",
+    image: `${import.meta.env.BASE_URL}certificates/cpd-corporate-trainer.png`,
     signatory: "Dr. Aparna Sethi",
     summary: "Official CPD accredited qualification recognizing professional excellence in corporate training design, interactive facilitation, and learning reflection frameworks.",
     badges: ["CPD Standards Office", "Provider No: 22381", "International Standard"]
@@ -138,7 +138,7 @@ export const CERTIFICATIONS: Certificate[] = [
     participantId: "PRO - 79635",
     credentialCode: "Program ID No. 748691",
     creditsDescription: "Approved for 30 HR (General) recertification credit hours toward aPHRi, aPHR, PHR, PHRca, SPHRi, GPHR, PHRi, and SPHR",
-    image: "/certificates/hrci-corporate-trainer.png",
+    image: `${import.meta.env.BASE_URL}certificates/hrci-corporate-trainer.png`,
     signatory: "Dr. Aparna Sethi · PROTOUCH",
     summary: "Elite corporate facilitator certification recognized globally by HRCI for delivering high-impact human resources, organizational development, and leadership workshops.",
     badges: ["HRCI Approved", "30 HR Credit Hours", "Program ID: 748691"]
